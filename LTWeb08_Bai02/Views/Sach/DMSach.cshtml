@@ -1,0 +1,80 @@
+﻿@using LTWeb08_Bai02.Models
+@model IEnumerable<LTWeb08_Bai02.Models.SACH>
+
+@{
+    ViewBag.Title = "Quản lý thông tin sách";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@helper Truncate(string input, int length)
+{
+    if (string.IsNullOrEmpty(input))
+    {
+        @:Không có mô tả
+    }
+    else if (input.Length < length)
+    {
+        @input
+    }
+    else
+    {
+        @input.Substring(0, length)<text>...</text>
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="fw-bold text-primary text-center mb-4">QUẢN LÝ THÔNG TIN SÁCH</h2>
+
+        <p>
+            @Html.ActionLink("Create New", "ThemMoiSach", null, new { @class = "text-decoration-none text-success" })
+        </p>
+
+        <table class="table table-bordered align-middle shadow-sm">
+            <thead class="table-success">
+                <tr>
+                    <th>Tên sách</th>
+                    <th>Giá bán</th>
+                    <th>Mô tả</th>
+                    <th>Ảnh bìa</th>
+                    <th>Ngày cập nhật</th>
+                    <th>Số lượng tồn</th>
+                    <th>Chủ đề</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.TenSach)</td>
+                        <td>@Html.DisplayFor(modelItem => item.GiaBan)</td>
+                        <td>@Truncate(item.MoTa, 100)</td>
+                        <td class="text-center">
+                            <img src="@Url.Content("~/Images/" + item.AnhBia)" alt="Ảnh bìa" width="80" />
+                        </td>
+                        <td>
+                            @(item.NgayCapNhat.HasValue ? item.NgayCapNhat.Value.ToString("dd/MM/yyyy") : "")
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.SoLuongTon)</td>
+                        <td>@Html.DisplayFor(modelItem => item.CHUDE.TenChuDe)</td>
+                        <td>
+                            @Html.ActionLink("Sửa", "SuaSach", new { id = item.MaSach }, new { @class = "text-decoration-none" }) |
+                            @Html.ActionLink("Chi tiết", "ChiTietSach", new { id = item.MaSach }, new { @class = "text-decoration-none" }) |
+                            @Html.ActionLink("Xóa", "XoaSach", new { id = item.MaSach }, new { @class = "text-decoration-none" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

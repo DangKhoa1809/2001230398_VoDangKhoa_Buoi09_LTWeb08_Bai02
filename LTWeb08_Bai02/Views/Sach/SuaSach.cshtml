@@ -1,0 +1,86 @@
+﻿@model LTWeb08_Bai02.Models.SACH
+
+@{
+    ViewBag.Title = "Hiệu chỉnh sách";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="container mt-4">
+        <form action="@Url.Action("SuaSach", "Sach")" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.MaSach)
+            @Html.Hidden("AnhBiaCu", Model.AnhBia)
+
+            <div class="card shadow-sm p-4 rounded-3">
+                <h2 class="fw-bold mb-4 text-center text-primary">HIỆU CHỈNH SÁCH</h2>
+
+                <div class="row mb-3 align-items-center">
+                    <label class="col-sm-2 col-form-label fw-semibold">Ảnh Bìa</label>
+                    <div class="col-sm-10">
+                        @if (!string.IsNullOrEmpty(Model.AnhBia))
+                        {
+                            <div class="mb-2">
+                                <img src="~/Images/@Model.AnhBia" alt="Ảnh hiện tại"
+                                     width="120" class="rounded shadow-sm border" />
+                                <p class="text-muted mt-1">(Ảnh hiện tại)</p>
+                            </div>
+                        }
+
+                        <label class="fw-semibold text-primary mb-1">Chọn ảnh mới (nếu muốn thay)</label>
+                        <input type="file" name="fileUpload" class="form-control" accept="image/*" />
+                    </div>
+                </div>
+
+                <div class="row mb-3 align-items-center">
+                    <label class="col-sm-2 col-form-label fw-semibold">Ngày Cập Nhật</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.NgayCapNhat, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                        @Html.ValidationMessageFor(m => m.NgayCapNhat, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3 align-items-center">
+                    <label class="col-sm-2 col-form-label fw-semibold">Số lượng tồn</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.SoLuongTon, new { @class = "form-control", type = "number", min = "0" })
+                        @Html.ValidationMessageFor(m => m.SoLuongTon, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3 align-items-center">
+                    <label class="col-sm-2 col-form-label fw-semibold">Chủ Đề</label>
+                    <div class="col-sm-10">
+                        @Html.DropDownListFor(m => m.MaCD, (SelectList)ViewBag.MaCD, "-- Chọn chủ đề --", new { @class = "form-select" })
+                        @Html.ValidationMessageFor(m => m.MaCD, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3 align-items-center">
+                    <label class="col-sm-2 col-form-label fw-semibold">Nhà Xuất Bản</label>
+                    <div class="col-sm-10">
+                        @Html.DropDownListFor(m => m.MaNXB, (SelectList)ViewBag.MaNXB, "-- Chọn nhà xuất bản --", new { @class = "form-select" })
+                        @Html.ValidationMessageFor(m => m.MaNXB, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col text-center">
+                        <button type="submit" class="btn btn-primary px-4 mx-2">SAVE</button>
+                        <a href="@Url.Action("DMSach", "Sach")" class="btn btn-danger px-4 mx-2">TRỞ LẠI</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+
+
